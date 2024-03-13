@@ -106,9 +106,17 @@ class Order
     #[ORM\OneToMany(mappedBy: 'aOrder', targetEntity: ContactSoftware::class)]
     private Collection $contactSoftware;
 
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: Item::class, orphanRemoval: true)]
+    private Collection $items;
+
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: FileUploaded::class)]
+    private Collection $files;
+
     public function __construct()
     {
         $this->contactSoftware = new ArrayCollection();
+        $this->items = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -485,5 +493,146 @@ class Order
     public function __toString(): string
     {
         return "$this->entity - $this->number - $this->contact";
+    }
+
+    /**
+     * @return Collection<int, Item>
+     */
+    public function getItems(): Collection
+    {
+        return $this->items;
+    }
+
+    public function addItem(Item $item): static
+    {
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItem(Item $item): static
+    {
+        if ($this->items->removeElement($item)) {
+            // set the owning side to null (unless already changed)
+            if ($item->getOrder() === $this) {
+                $item->setOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, FileUploaded>
+     */
+    public function getFiles(): Collection
+    {
+        return $this->files;
+    }
+
+    public function addFile(FileUploaded $file): static
+    {
+        if (!$this->files->contains($file)) {
+            $this->files->add($file);
+            $file->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFile(FileUploaded $file): static
+    {
+        if ($this->files->removeElement($file)) {
+            // set the owning side to null (unless already changed)
+            if ($file->getOrder() === $this) {
+                $file->setOrder(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStat(){
+
+        if($this->getStatus() != null) {
+            //Suspendu
+            if ($this->getStatus()->getId() == 3) {
+
+                return "Suspendu";
+
+            }
+            //Annule
+            if ($this->getStatus()->getId() == 4) {
+
+                return "Annulé";
+
+            }
+            //Fermé
+            if ($this->getStatus()->getId() == 2) {
+
+                return "Fermé";
+
+            }
+            if ($this->getTovalidate() == null && $this->getDateValidate() == null) {
+                return "4";
+            }
+
+            //En attente de validation BLEU info
+            if ($this->getDateValidate() == null) {
+                return "Att validation";
+            }
+
+            //En attente de commande Orange warning
+            if ($this->getDateEntityNumber() == null) {
+                return "Att commande";
+            }
+
+            //En attente de reception
+            if ($this->getDateReceive() == null) {
+                $allReceive = false;
+                if(count($this->getItems()) > 0){
+
+                    foreach ($this->getItems() as $item){
+
+                        if($item->getReceive() == true){
+
+                            $allReceive = true;
+
+                        }
+
+                    }
+
+                }else{
+
+                    $allReceive = false;
+                }
+                if($allReceive){
+                    return "Récéptionnée";
+                }else{
+                    return "Récéption partielle";
+                }
+
+            }
+
+            //En attente de distribution
+            if ($this->getDateDelivery() == null) {
+
+                return "Att distribution";
+            }
+
+
+
+        }
+
+
+        return "-1";
+
+
+
+
+
     }
 }

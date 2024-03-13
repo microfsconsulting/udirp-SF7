@@ -52,14 +52,21 @@ class OrderRepository extends ServiceEntityRepository
     {
 
 
-        return $this->createQueryBuilder('o')
-            ->orderBy('o.number', 'DESC')
-            ->setMaxResults(100)
-            ->join('o.entity','entity')
-            ->join('o.udi','udi')
-            ->join('o.contact','contact')
-            ->getQuery()
-            ->getResult()
-            ;
+        $query = $this->_em->createQuery("
+            SELECT o.number,CONCAT(c.first_name,' ',c.last_name) contact,CONCAT(u.first_name,' ',u.last_name) user,e.name entity,SUBSTRING(s.name,1,10) supplier,o.entity_number,CONCAT(SUBSTRING(o.label,1,50),'...') label,i.label AS item_label,i.reference AS item_ref,i.amount AS item_amount,i.unit_price AS item_unit_price,i.discount AS item_discount,(i.amount * i.unit_price) * (1 - i.discount /100) AS total_discounted,f.filename AS filename,f.id AS fileId
+            FROM App:Order o
+            LEFT JOIN o.contact c 
+            LEFT JOIN o.entity e
+            LEFT JOIN o.user u
+            LEFT JOIN o.supplier s
+            LEFT JOIN o.items i
+            LEFT JOIN o.files f
+            ORDER BY o.number DESC
+            "
+        );
+
+        $query->setMaxResults(50);
+
+        return  $query->getArrayResult();
     }
 }

@@ -3,17 +3,125 @@
 {% block title %}Hello TestController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
 
 
-    {% for order in orders %}
-        {{ order.number }} {{ order.entity.name }} {{ order.contact.firstname }}<br>
-    {%  endfor %}
-</div>
+                <div class="page-header">
+                    <h3 class="page-title"> Commandes </h3>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">En attente de recéption</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Profile</th>
+                                            <th>VatNo.</th>
+                                            <th>Created</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order in orders %}
+                                            <tr>
+                                                <td>{{ order["number"] }}</td>
+                                                <td>{{ order["entity"] }}</td>
+                                                <td>{{ order["contact"] }}</td>
+                                                <td><label class="badge text-bg-danger">Pending</label></td>
+                                            </tr>
+                                        {%  endfor %}
+                                        <tr>
+                                            <td>Messsy</td>
+                                            <td>53275532</td>
+                                            <td>15 May 2017</td>
+                                            <td><label class="badge badge-warning">In progress</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>John</td>
+                                            <td>53275533</td>
+                                            <td>14 May 2017</td>
+                                            <td><label class="badge badge-info">Fixed</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Peter</td>
+                                            <td>53275534</td>
+                                            <td>16 May 2017</td>
+                                            <td><label class="badge badge-success">Completed</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dave</td>
+                                            <td>53275535</td>
+                                            <td>20 May 2017</td>
+                                            <td><label class="badge badge-warning">In progress</label></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">En attente de livraison</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Profile</th>
+                                            <th>VatNo.</th>
+                                            <th>Created</th>
+                                            <th>Status</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for order in orders %}
+                                            <tr>
+                                                <td>{{ order["number"] }}</td>
+                                                <td>{{ order["entity"] }}</td>
+                                                <td>{{ order["contact"] }}</td>
+                                                <td><label class="badge text-bg-warning">Pending</label></td>
+                                            </tr>
+                                        {%  endfor %}
+                                        <tr>
+                                            <td>Messsy</td>
+                                            <td>53275532</td>
+                                            <td>15 May 2017</td>
+                                            <td><label class="badge text-bg-warning">In progress</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>John</td>
+                                            <td>53275533</td>
+                                            <td>14 May 2017</td>
+                                            <td><label class="badge badge-info">Fixed</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Peter</td>
+                                            <td>53275534</td>
+                                            <td>16 May 2017</td>
+                                            <td><label class="badge badge-success">Completed</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dave</td>
+                                            <td>53275535</td>
+                                            <td>20 May 2017</td>
+                                            <td><label class="badge badge-warning">In progress</label></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2021</span>
+                    <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a> from Bootstrapdash.com</span>
+                </div>
+            </footer>
+
 {% endblock %}

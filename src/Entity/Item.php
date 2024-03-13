@@ -47,6 +47,10 @@ class Item
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_receive = null;
 
+    #[ORM\ManyToOne(inversedBy: 'items')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Order $order = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -180,6 +184,18 @@ class Item
     public function setDateReceive(?\DateTimeInterface $date_receive): static
     {
         $this->date_receive = $date_receive;
+
+        return $this;
+    }
+
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    public function setOrder(?Order $order): static
+    {
+        $this->order = $order;
 
         return $this;
     }

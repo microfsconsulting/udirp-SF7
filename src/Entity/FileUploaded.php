@@ -20,11 +20,11 @@ class FileUploaded
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\ManyToOne]
-    private ?Order $command = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_mail = null;
+
+    #[ORM\ManyToOne(inversedBy: 'files')]
+    private ?Order $order = null;
 
     public function getId(): ?int
     {
@@ -75,6 +75,18 @@ class FileUploaded
     public function setDateMail(?\DateTimeInterface $date_mail): static
     {
         $this->date_mail = $date_mail;
+
+        return $this;
+    }
+
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    public function setOrder(?Order $order): static
+    {
+        $this->order = $order;
 
         return $this;
     }
